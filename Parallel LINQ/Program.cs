@@ -121,7 +121,7 @@
         // Запускаем асинхронную задачу, в которой через 1010 миллисекунд прерываем операцию
         new Task(() =>
         {
-            Thread.Sleep(1010);
+            Thread.Sleep(1000);
             cts.Cancel();
             // В параллельной запущенной задаче вызывается метод cts.Cancel(),
             // что приводит к завершению операции и генерации исключения OperationCanceledException
@@ -132,8 +132,7 @@
             var squares = from n in numbers.AsParallel().WithCancellation(cts.Token)
                           select Square(n);
 
-            foreach (var n in squares)
-                Console.WriteLine(n);
+            squares.ForAll(n => Console.WriteLine(n));
         }
         catch (OperationCanceledException)
         {
